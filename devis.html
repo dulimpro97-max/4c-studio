@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demander un devis - 4C Agence Digitale</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --black: #0B0B0B; --white: #FFFFFF; --anthracite: #1A1A1A;
+            --gold: #D4AF37; --gold-light: #F0D68A; --text-gray: #888888;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif; background: var(--black); color: var(--white);
+            line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column;
+        }
+
+        /* Navigation */
+        .nav { 
+            padding: 1.5rem 4rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid rgba(255,255,255,0.05); 
+        }
+        .nav-logo { 
+            height: 40px; 
+            display: flex; 
+            align-items: center; 
+        }
+        .nav-logo img { 
+            height: 100%; 
+            width: auto;
+        }
+        .back-home { 
+            color: var(--text-gray); 
+            text-decoration: none; 
+            font-size: 0.9rem; 
+            transition: color 0.3s; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        .back-home:hover { color: var(--gold); }
+
+        /* Hero Devis */
+        .devis-hero { 
+            padding: 4rem 2rem; 
+            text-align: center; 
+            max-width: 800px; 
+            margin: 0 auto; 
+        }
+        .devis-hero h1 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 3rem; 
+            margin-bottom: 1rem; 
+        }
+        .devis-hero h1 span { color: var(--gold); }
+        .devis-hero p { color: var(--text-gray); font-size: 1.1rem; }
+
+        /* Formulaire */
+        .form-container { 
+            max-width: 700px; 
+            margin: 0 auto 6rem; 
+            padding: 0 2rem; 
+            width: 100%; 
+        }
+        .form-group { 
+            margin-bottom: 2rem; 
+            position: relative; 
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 1.2rem; background: var(--anthracite);
+            border: 1px solid rgba(255,255,255,0.1); color: var(--white);
+            font-family: 'Inter', sans-serif; font-size: 1rem; transition: all 0.3s ease;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--gold); background: #222;
+        }
+        .form-group textarea { height: 150px; resize: vertical; }
+        
+        .form-group label {
+            position: absolute; left: 1.2rem; top: 1.2rem; color: var(--text-gray);
+            transition: all 0.3s ease; pointer-events: none;
+        }
+        .form-group input:focus ~ label, .form-group input:valid ~ label,
+        .form-group textarea:focus ~ label, .form-group textarea:valid ~ label,
+        .form-group select:focus ~ label, .form-group select:valid ~ label {
+            top: -0.6rem; left: 1rem; font-size: 0.8rem; background: var(--black);
+            padding: 0 0.5rem; color: var(--gold);
+        }
+
+        .form-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 2rem; 
+        }
+        @media (max-width: 768px) { 
+            .form-grid { grid-template-columns: 1fr; } 
+        }
+
+        .submit-btn {
+            width: 100%; background: var(--gold); color: var(--black); border: none;
+            padding: 1.2rem; font-size: 1rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 2px; cursor: pointer; transition: all 0.3s ease; margin-top: 1rem;
+        }
+        .submit-btn:hover:not(:disabled) { 
+            background: var(--gold-light); transform: translateY(-2px); 
+        }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        /* Styles Formspree */
+        [data-fs-success] { 
+            display: none; text-align: center; padding: 2rem; 
+            border: 1px solid #4CAF50; background: rgba(76, 175, 80, 0.1); 
+            margin-bottom: 2rem; border-radius: 5px; 
+        }
+        [data-fs-error] { 
+            display: none; color: #ff6b6b; font-size: 0.85rem; margin-top: 0.3rem; 
+        }
+        .form-group [data-fs-error] { 
+            position: absolute; bottom: -1.5rem; left: 0; 
+        }
+
+        footer { 
+            background: var(--black); padding: 2rem; text-align: center; 
+            border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto; 
+        }
+        footer img { height: 30px; margin-bottom: 1rem; }
+        .footer-text { color: var(--text-gray); font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="index.html" class="nav-logo">
+            <img src="Logo.png" alt="4C Logo">
+        </a>
+        <a href="index.html" class="back-home">← Retour à l'accueil</a>
+    </nav>
+
+    <!-- Hero -->
+    <div class="devis-hero">
+        <h1>Demander un <span>devis</span></h1>
+        <p>Remplissez ce formulaire pour que nous puissions analyser vos besoins et vous proposer une solution digitale sur mesure.</p>
+    </div>
+
+    <!-- Formulaire -->
+    <div class="form-container">
+        
+        <!-- Zone de succès -->
+        <div data-fs-success>
+            <h3 style="color: #4CAF50; font-family: 'Playfair Display', serif;">✓ Devis envoyé avec succès !</h3>
+            <p style="color: var(--text-gray);">Merci pour votre confiance. Notre équipe vous répondra dans les 24 heures.</p>
+        </div>
+
+        <form id="devis-form">
+            <div class="form-grid">
+                <div class="form-group">
+                    <input type="text" id="prenom" name="prenom" data-fs-field required>
+                    <label for="prenom">Prénom</label>
+                    <span data-fs-error="prenom"></span>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="nom" name="nom" data-fs-field required>
+                    <label for="nom">Nom</label>
+                    <span data-fs-error="nom"></span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <input type="email" id="email" name="email" data-fs-field required>
+                <label for="email">Adresse e-mail</label>
+                <span data-fs-error="email"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="tel" id="tel" name="tel" data-fs-field>
+                <label for="tel">Numéro de téléphone</label>
+                <span data-fs-error="tel"></span>
+            </div>
+
+            <div class="form-group">
+                <select id="service" name="service" data-fs-field required>
+                    <option value="" disabled selected></option>
+                    <option value="site">Création de site web</option>
+                    <option value="identite">Identité de marque (Logo, Charte)</option>
+                    <option value="seo">Référencement (SEO)</option>
+                    <option value="maintenance">Maintenance & Support</option>
+                    <option value="global">Projet Global (Site + Identité)</option>
+                </select>
+                <label for="service">Service souhaité</label>
+                <span data-fs-error="service"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="budget" name="budget" data-fs-field>
+                <label for="budget">Budget approximatif (Optionnel)</label>
+                <span data-fs-error="budget"></span>
+            </div>
+
+            <div class="form-group">
+                <textarea id="message" name="message" data-fs-field required></textarea>
+                <label for="message">Décrivez votre projet et vos besoins</label>
+                <span data-fs-error="message"></span>
+            </div>
+
+            <button type="submit" data-fs-submit-btn class="submit-btn">Envoyer ma demande de devis</button>
+        </form>
+    </div>
+
+    <footer>
+        <img src="Logo.png" alt="4C">
+        <p class="footer-text">© 2026 4C Agency. Tous droits réservés.</p>
+    </footer>
+
+    <!-- Scripts Formspree AJAX -->
+    <script>
+      window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+      formspree('initForm', { 
+          formElement: '#devis-form', 
+          formId: 'mlgyvagp' 
+      });
+    </script>
+    <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+
+</body>
+</html>

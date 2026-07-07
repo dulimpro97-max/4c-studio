@@ -1,0 +1,478 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4C | Agence Digitale Premium</title>
+    
+    <!-- Google Fonts : Inter + Manrope + Playfair Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --black: #0B0B0B;
+            --white: #FFFFFF;
+            --anthracite: #1A1A1A; /* Gris foncé des cartes */
+            --gold: #D4AF37;       /* Or plus brillant pour le premium */
+            --gold-light: #F0D68A;
+            --text-gray: #888888;
+            --text-light: #CCCCCC;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--black); }
+        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+        /* Navigation */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 1000; padding: 1.5rem 4rem;
+            display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.4s ease;
+            background: transparent;
+        }
+        .nav.scrolled {
+            background: rgba(11, 11, 11, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 1rem 4rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-logo {
+            height: 40px; width: auto;
+            display: flex; align-items: center;
+        }
+        .nav-logo img { height: 100%; object-fit: contain; }
+        
+        .nav-menu { display: flex; list-style: none; gap: 2.5rem; align-items: center; }
+        .nav-menu a {
+            color: var(--text-light); text-decoration: none;
+            font-size: 0.85rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+            transition: color 0.3s ease; position: relative;
+        }
+        .nav-menu a:hover { color: var(--gold); }
+        
+        .cta-nav {
+            background: transparent; border: 1px solid var(--gold);
+            padding: 0.7rem 1.8rem; color: var(--gold); font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .cta-nav:hover {
+            background: var(--gold); color: var(--black); border-color: var(--gold);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center;
+            position: relative; padding: 8rem 4rem 4rem;
+            background: radial-gradient(circle at 70% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 60%);
+            overflow: hidden;
+        }
+        .hero-container {
+            max-width: 1400px; width: 100%; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+        }
+        .hero-content { z-index: 2; }
+        .hero-badge {
+            display: inline-block; color: var(--gold);
+            font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase;
+            margin-bottom: 1.5rem; opacity: 0; animation: fadeInUp 0.8s ease 0.3s forwards;
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem; font-weight: 700; line-height: 1.1;
+            margin-bottom: 2rem; opacity: 0; animation: fadeInUp 0.8s ease 0.6s forwards;
+        }
+        .hero-title span { color: var(--gold); display: block; }
+        .hero-subtitle {
+            font-size: 1.1rem; color: var(--text-light);
+            font-weight: 300; max-width: 500px;
+            margin-bottom: 3rem; opacity: 0; animation: fadeInUp 0.8s ease 0.9s forwards;
+        }
+        .hero-buttons {
+            display: flex; gap: 1.5rem; flex-wrap: wrap;
+            opacity: 0; animation: fadeInUp 0.8s ease 1.2s forwards;
+        }
+        .btn-primary {
+            background: var(--gold); color: var(--black);
+            padding: 1rem 2.5rem; text-decoration: none; font-weight: 600; letter-spacing: 1px;
+            transition: all 0.3s ease; border: none;
+        }
+        .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+        .btn-secondary {
+            border: 1px solid rgba(255,255,255,0.2); color: var(--white);
+            padding: 1rem 2.5rem; text-decoration: none; font-weight: 500; letter-spacing: 1px;
+            transition: all 0.3s ease; display: flex; align-items: center; gap: 10px;
+        }
+        .btn-secondary:hover { border-color: var(--white); }
+        
+        .hero-visual {
+            position: relative; z-index: 2;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .laptop-mockup {
+            width: 100%; max-width: 650px;
+            border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.6s ease;
+        }
+        .hero-visual:hover .laptop-mockup { transform: perspective(1000px) rotateY(0deg); }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            background: var(--anthracite); padding: 2rem 4rem;
+            border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .stat-item { text-align: center; }
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem; font-weight: 700; color: var(--gold); display: block;
+        }
+        .stat-label { color: var(--text-gray); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Section Générale */
+        section { padding: 6rem 4rem; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem; font-weight: 700; letter-spacing: -1px;
+        }
+        .section-title span { color: var(--gold); }
+        .section-subtitle { color: var(--text-gray); max-width: 600px; margin: 1rem auto 0; }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1400px; margin: 0 auto;
+        }
+        .service-card {
+            background: var(--anthracite); padding: 3rem 2rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            text-align: center; transition: all 0.4s ease; position: relative;
+            cursor: default;
+        }
+        .service-card:hover {
+            transform: translateY(-10px); border-color: var(--gold);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1);
+        }
+        .service-icon { font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--gold); }
+        .service-card h3 { font-size: 1.3rem; margin-bottom: 1rem; font-weight: 600; }
+        .service-card p { color: var(--text-light); font-size: 0.95rem; }
+
+        /* Processus */
+        .process-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; text-align: center;
+        }
+        .step-item { position: relative; }
+        .step-number {
+            width: 60px; height: 60px; margin: 0 auto 1rem;
+            border: 2px solid var(--gold); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--gold);
+            transition: all 0.3s ease;
+        }
+        .step-item:hover .step-number { background: var(--gold); color: var(--black); }
+        .step-item h4 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .step-item p { color: var(--text-gray); font-size: 0.85rem; }
+
+        /* Réalisations (Projets) */
+        .portfolio-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1400px; margin: 0 auto;
+        }
+        .portfolio-card {
+            position: relative; overflow: hidden; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05);
+            height: 300px; cursor: pointer;
+        }
+        .portfolio-card img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.6s ease; opacity: 0.7;
+        }
+        .portfolio-card:hover img { transform: scale(1.05); opacity: 1; }
+        .portfolio-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 2rem; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        }
+        .portfolio-overlay h3 { font-size: 1.2rem; margin-bottom: 0.3rem; }
+        .portfolio-overlay p { font-size: 0.8rem; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Témoignages */
+        .testimonials-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto;
+        }
+        .testimonial-card {
+            background: var(--anthracite); padding: 2.5rem; border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+        }
+        .testimonial-card::before {
+            content: '"'; font-family: 'Playfair Display', serif;
+            font-size: 4rem; color: var(--gold); position: absolute; top: 0.5rem; left: 1.5rem; opacity: 0.3;
+        }
+        .testimonial-text { font-style: italic; font-size: 0.95rem; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+        .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+        .testimonial-author img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold); }
+        .author-info strong { display: block; font-size: 0.95rem; }
+        .author-info span { font-size: 0.8rem; color: var(--text-gray); }
+        .stars { color: var(--gold); font-size: 0.8rem; margin-top: 0.2rem; letter-spacing: 2px; }
+
+        /* CTA Footer */
+        .cta-section {
+            background: var(--anthracite); text-align: center; padding: 4rem; border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .cta-section h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 1rem; }
+        .cta-section p { color: var(--text-gray); margin-bottom: 2rem; }
+
+        /* Footer Final */
+        footer { background: var(--black); padding: 4rem; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-grid {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; max-width: 1400px; margin: 0 auto;
+        }
+        .footer-brand img { height: 35px; margin-bottom: 1rem; }
+        .footer-brand p { color: var(--text-gray); font-size: 0.9rem; max-width: 300px; }
+        .footer-col h4 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem; color: var(--white); }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.8rem; }
+        .footer-col ul a { color: var(--text-gray); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .footer-col ul a:hover { color: var(--gold); }
+        .footer-bottom { text-align: center; color: var(--text-gray); font-size: 0.8rem; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05); }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-container { grid-template-columns: 1fr; text-align: center; }
+            .hero-subtitle { margin: 0 auto 3rem; }
+            .hero-buttons { justify-content: center; }
+            .hero-visual { display: none; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav { padding: 1rem 2rem; }
+            .nav-menu { display: none; flex-direction: column; background: var(--black); position: absolute; top: 100%; left: 0; right: 0; padding: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            .nav-menu.active { display: flex; }
+            .hero-title { font-size: 2.8rem; }
+            .hero { padding: 6rem 2rem 2rem; }
+            .stats-bar { grid-template-columns: 1fr 1fr; gap: 2rem; padding: 2rem; }
+            section { padding: 4rem 2rem; }
+            .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <a href="#" class="nav-logo">
+            <img src="logo.png" alt="4C Logo">
+        </a>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#realisations">Réalisations</a></li>
+            <li><a href="#process">Processus</a></li>
+            <li><a href="#contact" class="cta-nav">Demander un devis</a></li>
+        </ul>
+        <div class="menu-toggle" id="menuToggle" style="display:none; color:white; cursor:pointer; font-size:1.5rem;">☰</div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">Agence Digitale Premium</div>
+                <h1 class="hero-title">
+                    Le digital mérite mieux<br>
+                    <span>qu'un simple site web.</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Nous concevons des expériences digitales élégantes, performantes et pensées pour développer votre activité et valoriser votre image.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn-primary">Découvrir nos services</a>
+                    <a href="#realisations" class="btn-secondary">Voir nos réalisations →</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <!-- Mockup de l'ordinateur -->
+                <img src="https://via.placeholder.com/600x350/1A1A1A/D4AF37?text=4C+Mockup+Screen" alt="4C Laptop" class="laptop-mockup">
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+        <div class="stat-item"><span class="stat-number">100+</span><span class="stat-label">Projets réalisés</span></div>
+        <div class="stat-item"><span class="stat-number">50+</span><span class="stat-label">Clients satisfaits</span></div>
+        <div class="stat-item"><span class="stat-number">98%</span><span class="stat-label">Taux de satisfaction</span></div>
+        <div class="stat-item"><span class="stat-number">5★</span><span class="stat-label">Avis Google</span></div>
+    </div>
+
+    <!-- Nos Services -->
+    <section id="services">
+        <div class="section-header">
+            <h2 class="section-title">Nos <span>Services</span></h2>
+            <p class="section-subtitle">Des solutions digitales complètes pour développer votre image et vos résultats.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card"><div class="service-icon">🌐</div><h3>Création de sites web</h3><p>Sites vitrines, e-commerce et plateformes sur mesure. Rapides, modernes et performants.</p></div>
+            <div class="service-card"><div class="service-icon">✒️</div><h3>Identité de marque</h3><p>Logos, chartes graphiques et univers visuels forts pour marquer les esprits.</p></div>
+            <div class="service-card"><div class="service-icon">🔍</div><h3>Référencement (SEO)</h3><p>Optimisation SEO pour améliorer votre visibilité et attirer plus de clients qualifiés.</p></div>
+            <div class="service-card"><div class="service-icon">🛡️</div><h3>Maintenance & support</h3><p>Mise à jour, sécurité et support réactif pour une tranquillité d'esprit totale.</p></div>
+        </div>
+    </section>
+
+    <!-- Nos Réalisations -->
+    <section id="realisations" style="background: var(--anthracite);">
+        <div class="section-header">
+            <h2 class="section-title">Nos <span>Réalisations</span></h2>
+            <p class="section-subtitle">Des projets qui parlent d'eux-mêmes.</p>
+        </div>
+        <div class="portfolio-grid">
+            <div class="portfolio-card">
+                <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80" alt="Hotel">
+                <div class="portfolio-overlay"><h3>Luxoria Hôtels</h3><p>Site vitrine</p></div>
+            </div>
+            <div class="portfolio-card">
+                <img src="https://images.unsplash.com/photo-1494412651409-8963ce7935a7?auto=format&fit=crop&w=800&q=80" alt="Transport">
+                <div class="portfolio-overlay"><h3>Alpine Transport</h3><p>Site vitrine</p></div>
+            </div>
+            <div class="portfolio-card">
+                <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=800&q=80" alt="Medical">
+                <div class="portfolio-overlay"><h3>Medicalis Clinique</h3><p>Site vitrine</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Processus -->
+    <section id="process">
+        <div class="section-header">
+            <h2 class="section-title">Notre <span>Processus</span></h2>
+            <p class="section-subtitle">Une méthode claire, simple et efficace.</p>
+        </div>
+        <div class="process-grid">
+            <div class="step-item"><div class="step-number">1</div><h4>Découverte</h4><p>Analyse des besoins et objectifs.</p></div>
+            <div class="step-item"><div class="step-number">2</div><h4>Conception</h4><p>Design sur mesure et UX.</p></div>
+            <div class="step-item"><div class="step-number">3</div><h4>Développement</h4><p>Code robuste et responsive.</p></div>
+            <div class="step-item"><div class="step-number">4</div><h4>Mise en ligne</h4><p>Lancement et tests finaux.</p></div>
+            <div class="step-item"><div class="step-number">5</div><h4>Suivi</h4><p>Accompagnement et évolution.</p></div>
+        </div>
+    </section>
+
+    <!-- Témoignages -->
+    <section id="testimonials" style="background: var(--anthracite);">
+        <div class="section-header">
+            <h2 class="section-title">Ils nous font <span>confiance</span></h2>
+            <p class="section-subtitle">Leur succès est notre meilleure récompense.</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <p class="testimonial-text">"Une équipe incroyablement créative et professionnelle. Leur accompagnement a été clé pour notre transformation digitale."</p>
+                <div class="testimonial-author">
+                    <img src="https://i.pravatar.cc/150?img=1" alt="Avatar">
+                    <div class="author-info"><strong>Julien D.</strong><span>Directeur, Transport</span><div class="stars">★★★★★</div></div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"4C a su capturer l'essence de notre marque. Le site est élégant, rapide et nous a apporté de nouveaux clients."</p>
+                <div class="testimonial-author">
+                    <img src="https://i.pravatar.cc/150?img=9" alt="Avatar">
+                    <div class="author-info"><strong>Sophie M.</strong><span>Fondatrice, Hotels</span><div class="stars">★★★★★</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA & Footer -->
+    <div class="cta-section" id="contact">
+        <h2>Prêt à passer<br>au niveau supérieur ?</h2>
+        <p>Discutons de votre projet et créons ensemble une présence digitale qui vous distingue.</p>
+        <a href="#" class="btn-primary">Demander un devis</a>
+ <div class="cta-section" id="contact">
+    <h2>Prêt à passer<br>au niveau supérieur ?</h2>
+    <p>Discutons de votre projet et créons ensemble une présence digitale qui vous distingue.</p>
+    
+    <!-- FORMULAIRE FORMSPREE AVEC AJAX -->
+    <div data-fs-success style="display:none; color:var(--gold); font-size:1.2rem; padding:2rem; background:var(--anthracite); border-radius:8px;">
+        ✅ Merci ! Votre message a été envoyé avec succès. Nous vous répondrons sous 24h.
+    </div>
+    <div data-fs-error style="display:none; color:#ff6b6b; font-size:0.9rem; padding:1rem; background:rgba(255,0,0,0.1); border-radius:8px; margin-bottom:1rem;"></div>
+
+    <form id="contact-form" style="max-width:500px; margin:0 auto; text-align:left;">
+        <div style="margin-bottom:1rem;">
+            <label for="email" style="display:block; color:var(--text-light); font-size:0.9rem; margin-bottom:0.3rem;">Votre email *</label>
+            <input type="email" id="email" name="email" required data-fs-field
+                   style="width:100%; padding:0.8rem; background:var(--black); border:1px solid rgba(255,255,255,0.1); color:var(--white); border-radius:4px;">
+            <span data-fs-error="email" style="color:#ff6b6b; font-size:0.8rem;"></span>
+        </div>
+        <div style="margin-bottom:1.5rem;">
+            <label for="message" style="display:block; color:var(--text-light); font-size:0.9rem; margin-bottom:0.3rem;">Votre message *</label>
+            <textarea id="message" name="message" rows="4" required data-fs-field
+                      style="width:100%; padding:0.8rem; background:var(--black); border:1px solid rgba(255,255,255,0.1); color:var(--white); border-radius:4px;"></textarea>
+            <span data-fs-error="message" style="color:#ff6b6b; font-size:0.8rem;"></span>
+        </div>
+        <button type="submit" data-fs-submit-btn class="btn-primary" style="width:100%; cursor:pointer;">
+            Envoyer
+        </button>
+    </form>
+</div>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <img src="https://via.placeholder.com/150x40/0B0B0B/D4AF37?text=4C+LOGO" alt="4C">
+                <p>Agence digitale premium spécialisée dans la création de sites web, l'identité de marque et le référencement.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Agence</h4>
+                <ul><li><a href="#">À propos</a></li><li><a href="#">Notre approche</a></li><li><a href="#">Carrières</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul><li><a href="#">Création de sites web</a></li><li><a href="#">Identité de marque</a></li><li><a href="#">Référencement (SEO)</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="#">info@4c-agency.ch</a></li>
+                    <li><a href="#">+33 6 85 09 44 30</a></li>
+                    <li><a href="#">France / Suisse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 4C Agency. Tous droits réservés.</div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        });
+
+        // Mobile Menu Simple (si écran < 768px)
+        const toggle = document.getElementById('menuToggle');
+        const menu = document.getElementById('navMenu');
+        if(window.innerWidth <= 768) { toggle.style.display = 'block'; }
+        toggle.addEventListener('click', () => { menu.classList.toggle('active'); });
+<script>
+    window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+    formspree('initForm', { formElement: '#contact-form', formId: 'mlgyvagp' });
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+</body>
+</html>
+```
